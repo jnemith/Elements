@@ -41,9 +41,10 @@ private:
 
         switch(elem) {
             case EMPTY: res = BG_COLOR; break;
-            case SAND: res = glm::vec3(0.8f , 0.75f , 0.5f); break;
-            case WATER: res = glm::vec3(0.1f, 0.7f , 0.9f ); break;
-            case STEEL: res = glm::vec3(0.8f, 0.8f, 0.9f ); break;
+            case DIRT: res = glm::vec3(0.5, 0.4, 0.0); break;
+            case SAND: res = glm::vec3(0.8 , 0.75 , 0.5); break;
+            case WATER: res = glm::vec3(0.1, 0.7 , 0.9 ); break;
+            case STEEL: res = glm::vec3(0.8, 0.8, 0.9 ); break;
             default: res = BG_COLOR;
         }
 

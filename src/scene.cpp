@@ -1,4 +1,5 @@
 #include "scene.hpp"
+#include "controller.hpp"
 
 Scene::Scene(int w, int h) : rand_dir(std::uniform_int_distribution<>(0, 1)) {
     width = w;
@@ -87,25 +88,27 @@ void Scene::gen_texture(float* result) {
 
 // Add a new cell to the scene at position (x, y)
 void Scene::add_cell(Element element, int x, int y) {
-    int position = (y * width) + x;
-    Cell cell { element };
-    cells.at(position) = cell;
+    if(bounds(x, y)) {
+        int position = (y * width) + x;
+        Cell cell { element };
+        cells.at(position) = cell;
+    }
 }
 
 // Remove the cell in position (x, y) if it is not empty
-int Scene::remove_cell(int x, int y) {
-    int position = (y * width) + x;
-    if(!cell_empty(x, y)) {
-        Cell cell { EMPTY };
-        cells.at(position) = cell;
-        return 0;
+void Scene::remove_cell(int x, int y) {
+    if(bounds(x, y)) {
+        int position = (y * width) + x;
+        if(!cell_empty(x, y)) {
+            Cell cell { EMPTY };
+            cells.at(position) = cell;
+        }
     }
-    return -1;
 }
 
 // Return the element of the cell at position (x, y)
 Element Scene::get_element(int x, int y) {
-    if(x < 0 || x > width - 1 || y < 0 || y > height) {
+    if(!bounds(x, y)) {
         return BOUND;
     }
     int position = (y * width) + x;
@@ -114,6 +117,9 @@ Element Scene::get_element(int x, int y) {
 
 // Check if the cell at position (x, y) is empty
 bool Scene::cell_empty(int x, int y) {
+    if(!bounds(x, y)) {
+        return false;
+    }
     int position = (y * width) + x;
     return cells.at(position).get_element() == EMPTY;
 }
@@ -126,4 +132,11 @@ void Scene::set_direction() {
     } else {
         direction = RIGHT;
     }
+}
+
+bool Scene::bounds(int x, int y) {
+    if(x < 0 || x > width - 1 || y < 0 || y > height) {
+        return false;
+    }
+    return true;
 }

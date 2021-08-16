@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.11)
 
-project("Element")
+project("Elements")
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
@@ -20,7 +20,7 @@ find_package(glm REQUIRED)
 # find_package(ASSIMP REQUIRED)
 set(LIBS GL glfw glm GLAD dl) #vkbootstrap vma glm tinyobjloader imgui stb_image ASSIMP
 
-set(BIN_NAME Element)
+set(BIN_NAME Elements)
 file(GLOB_RECURSE SOURCE "${SRC}/*.cpp")
 
 

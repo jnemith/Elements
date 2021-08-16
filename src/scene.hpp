@@ -17,7 +17,7 @@ public:
     void update();
     void gen_texture(float* result);
     void add_cell(Element element, int x, int y);
-    int remove_cell(int x, int y);
+    void remove_cell(int x, int y);
 private:
     std::vector<Cell> cells;
     Direction direction { LEFT };
@@ -31,6 +31,7 @@ private:
     Element get_element(int x, int y);
     void set_direction();
     bool cell_empty(int x, int y);
+    bool bounds(int x, int y);
 
     // Update functions depending on cell element.
     void update_sand(int x, int y);
