@@ -4,12 +4,12 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include "cell.hpp"
 #include "scene.hpp"
 #include "shaders.hpp"
 #include "texture.hpp"
+#include "controller.hpp"
 
-void process_input(GLFWwindow *window);
+void process_input(GLFWwindow* window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 int main() {
@@ -28,7 +28,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    GLFWwindow* window = glfwCreateWindow(width, height, "Element", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(width, height, "Elements", NULL, NULL);
     if(window == NULL) {
         fprintf(stderr, "Failed to open GLFW window\n");
         glfwTerminate();
@@ -84,6 +84,7 @@ int main() {
         (void*)(2 * sizeof(float))
     );
 
+    Controller controller { window };
     // Texture
     int tex_w = 400;
     int tex_h = 300;
@@ -101,26 +102,19 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glClearColor(BG_COLOR.x, BG_COLOR.y, BG_COLOR.z, 1.0f);
 
-    float dt = 0.0f;
-    float last_time = glfwGetTime();
-    scene.add_cell(STEEL, 200, 100);
-    scene.add_cell(STEEL, 201, 100);
-    scene.add_cell(STEEL, 202, 100);
-    scene.add_cell(STEEL, 200, 101);
-    scene.add_cell(STEEL, 202, 101);
-    scene.add_cell(WATER, 201, 150);
-    scene.add_cell(WATER, 201, 200);
-    scene.add_cell(WATER, 201, 203);
-    scene.add_cell(WATER, 201, 204);
-    scene.add_cell(WATER, 201, 208);
     while(glfwWindowShouldClose(window) == 0) {
-        float current_time = glfwGetTime();
-        dt = current_time - last_time;
-
         // Process input and update
         process_input(window);
-        scene.add_cell(SAND, 100, 150);
+        controller.key_input();
+
         scene.update();
+        controller.update(tex_w, tex_h);
+
+        int x, y;
+        controller.position(&x, &y);
+        if(controller.get_button_down()) {
+            scene.add_cell(controller.current_element(), x, y);
+        }
 
         // Render
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
