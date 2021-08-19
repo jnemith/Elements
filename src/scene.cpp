@@ -95,8 +95,13 @@ void Scene::add_input(int x_pos, int y_pos, int radius, Element current_element)
 
     for(int y_offset = -radius; y_offset < radius; y_offset++) {
         for(int x_offset = -radius; x_offset < radius; x_offset++) {
-            if(y_offset * y_offset + x_offset * x_offset <= r2) {
-                add_cell(current_element, x_pos + x_offset, y_pos + y_offset);
+            if(y_offset * y_offset + x_offset * x_offset < r2) {
+                int x = x_pos + x_offset;
+                int y = y_pos + y_offset;
+
+                if(cell_empty(x, y)) {
+                    add_cell(current_element, x, y);
+                }
             }
         }
     }
@@ -108,10 +113,13 @@ void Scene::add_cell(Element element, int x, int y) {
         int position = (y * width) + x;
         Cell cell { element };
 
-        float rand_offset = rand_color(rng);
-        glm::vec3 color = cell.get_color();
-        glm::vec3 color_offset = glm::vec3(rand_offset);
-        cell.set_color(color + color_offset);
+        // Randomize the color of the cell
+        if(element != EMPTY) {
+            float rand_offset = rand_color(rng);
+            glm::vec3 color = cell.get_color();
+            glm::vec3 color_offset = glm::vec3(rand_offset);
+            cell.set_color(color + color_offset);
+        }
 
         cells.at(position) = cell;
     }
