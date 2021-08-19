@@ -106,15 +106,14 @@ int main() {
         // Process input and update
         process_input(window);
         controller.key_input();
-
-        scene.update();
         controller.update(tex_w, tex_h);
 
         int x, y;
         controller.position(&x, &y);
         if(controller.get_button_down()) {
-            scene.add_cell(controller.current_element(), x, y);
+            scene.add_input(x, y, controller.get_radius(), controller.current_element());
         }
+        scene.update();
 
         // Render
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

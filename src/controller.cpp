@@ -48,11 +48,22 @@ void Controller::cursor_enter(GLFWwindow* window, int entered) {
     }
 }
 
+void Controller::scroll(GLFWwindow* window, double xoffset, double yoffset) {
+    Controller* c = (Controller*)glfwGetWindowUserPointer(window);
+    if(yoffset > 0 && c->radius < 7) {
+        c->radius += 1;
+    } else if (yoffset < 0 && c->radius > 0) {
+        c->radius -= 1;
+    }
+}
+
+
 Controller::Controller(GLFWwindow* w) {
     window = w;
     glfwSetWindowUserPointer(window, this);
     glfwSetMouseButtonCallback(window, cursor_click);
     glfwSetCursorEnterCallback(window, cursor_enter);
+    glfwSetScrollCallback(window, scroll);
 }
 
 void Controller::position(int* x_pos, int* y_pos) {

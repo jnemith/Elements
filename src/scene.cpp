@@ -86,6 +86,21 @@ void Scene::gen_texture(float* result) {
     }
 }
 
+void Scene::add_input(int x_pos, int y_pos, int radius, Element current_element) {
+    int r2 = radius * radius;
+    if(radius == 0) {
+        add_cell(current_element, x_pos, y_pos);
+    }
+
+    for(int y_offset = -radius; y_offset < radius; y_offset++) {
+        for(int x_offset = -radius; x_offset < radius; x_offset++) {
+            if(y_offset * y_offset + x_offset * x_offset <= r2) {
+                add_cell(current_element, x_pos + x_offset, y_pos + y_offset);
+            }
+        }
+    }
+}
+
 // Add a new cell to the scene at position (x, y)
 void Scene::add_cell(Element element, int x, int y) {
     if(bounds(x, y)) {
@@ -135,7 +150,7 @@ void Scene::set_direction() {
 }
 
 bool Scene::bounds(int x, int y) {
-    if(x < 0 || x > width - 1 || y < 0 || y > height) {
+    if(x < 0 || x > width - 1 || y < 0 || y > height - 1) {
         return false;
     }
     return true;

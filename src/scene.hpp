@@ -17,6 +17,7 @@ public:
     void update();
     void gen_texture(float* result);
     void add_cell(Element element, int x, int y);
+    void add_input(int x_pos, int y_pos, int radius, Element current_element);
     void remove_cell(int x, int y);
 private:
     std::vector<Cell> cells;
