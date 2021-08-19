@@ -1,7 +1,8 @@
 #include "scene.hpp"
 #include "controller.hpp"
 
-Scene::Scene(int w, int h) : rand_dir(std::uniform_int_distribution<>(0, 1)) {
+Scene::Scene(int w, int h) : rand_dir(std::uniform_int_distribution<>(0, 1)),
+        rand_color(std::uniform_real_distribution<float>(-0.05, 0.05)) {
     width = w;
     height = h;
     std::random_device rd;
@@ -106,6 +107,12 @@ void Scene::add_cell(Element element, int x, int y) {
     if(bounds(x, y)) {
         int position = (y * width) + x;
         Cell cell { element };
+
+        float rand_offset = rand_color(rng);
+        glm::vec3 color = cell.get_color();
+        glm::vec3 color_offset = glm::vec3(rand_offset);
+        cell.set_color(color + color_offset);
+
         cells.at(position) = cell;
     }
 }

@@ -28,6 +28,7 @@ private:
     // Randomization
     std::mt19937 rng;
     std::uniform_int_distribution<int> rand_dir;
+    std::uniform_real_distribution<float> rand_color;
 
     Element get_element(int x, int y);
     void set_direction();

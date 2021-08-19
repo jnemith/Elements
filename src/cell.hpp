@@ -26,16 +26,17 @@ class Cell {
 public:
     Cell(Element elem) {
         element = elem;
-        set_color(elem);
+        default_color(elem);
     };
     glm::vec3 get_color() { return color; }
+    void set_color(glm::vec3 c) { color = c; }
     Element get_element() { return element; }
 private:
     Element element;
     float lifetime { 0.0f };
     glm::vec3 color { BG_COLOR };
 
-    void set_color(Element elem) {
+    void default_color(Element elem) {
         // Determine color based on element type
         glm::vec3 res;
 
